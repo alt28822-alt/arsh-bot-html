@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARSH BOT // HOLY ANGEL EDITION</title>
+  <style>
+    :root {
+      --bg-app: #eef7fc;
+      --panel-bg: rgba(255, 255, 255, 0.82);
+      --panel-border: rgba(186, 230, 253, 0.9);
+      
+      --accent-blue: #0284c7;
+      --accent-blue-hover: #0369a1;
+      --accent-cyan: #38bdf8;
+      
+      --shadow-blue: 0 0 16px rgba(56, 189, 248, 0.45);
+      --shadow-white: 0 4px 20px rgba(255, 255, 255, 0.9);
+      
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --input-bg: rgba(255, 255, 255, 0.92);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-app);
+      background-image: linear-gradient(rgba(240, 249, 255, 0.25), rgba(224, 242, 254, 0.35)), url('image_e9d45c.png');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--text-main);
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .wing-bg {
+      position: absolute;
+      top: 38px;
+      bottom: 0;
+      width: 420px;
+      background-image: url('image_f3b98a.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.95;
+      mix-blend-mode: multiply;
+      filter: drop-shadow(0 0 18px rgba(56, 189, 248, 0.7));
+      animation: wingPulse 3.5s ease-in-out infinite alternate;
+    }
+
+    .wing-left {
+      left: 0;
+      background-position: left center;
+    }
+
+    .wing-right {
+      right: 0;
+      background-position: right center;
+      transform: scaleX(-1);
+    }
+
+    @keyframes wingPulse {
+      0% {
+        filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.5)) contrast(100%);
+        opacity: 0.85;
+      }
+      100% {
+        filter: drop-shadow(0 0 28px rgba(56, 189, 248, 0.9)) contrast(115%);
+        opacity: 1;
+      }
+    }
+
+    header {
+      height: 38px;
+      background: rgba(255, 255, 255, 0.92);
+      border-bottom: 1px solid var(--panel-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      flex-shrink: 0;
+      z-index: 10;
+      box-shadow: 0 2px 10px rgba(56, 189, 248, 0.15);
+      backdrop-filter: blur(8px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      text-shadow: 0 0 8px rgba(56, 189, 248, 0.5);
+    }
+
+    .brand-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--accent-cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-cyan);
+      animation: pulseAngel 2s infinite alternate;
+    }
+
+    @keyframes pulseAngel {
+      0% { transform: scale(0.9); box-shadow: 0 0 6px var(--accent-cyan); }
+      100% { transform: scale(1.2); box-shadow: 0 0 14px var(--accent-blue); }
+    }
+
+    .version {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 320px 1fr 350px;
+      gap: 8px;
+      padding: 8px;
+      height: calc(100vh - 38px);
+      box-sizing: border-box;
+      position: relative;
+      z-index: 2;
+    }
+
+    .panel {
+      background: var(--panel-bg);
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(186, 230, 253, 0.4), inset 0 0 12px rgba(255, 255, 255, 0.8);
+      position: relative;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .dashboard > .panel:nth-child(1) {
+      background: rgba(255, 255, 255, 0.72);
+      background-image: linear-gradient(to right, rgba(255, 255, 255, 0.4), rgba(240, 249, 255, 0.8)), url('image_f3b98a.png');
+      background-size: cover;
+      background-position: left center;
+    }
+
+    .dashboard > .panel:nth-child(3) {
+      background: rgba(255, 255, 255, 0.72);
+      background-image: linear-gradient(to left, rgba(255, 255, 255, 0.4), rgba(240, 249, 255, 0.8)), url('image_f3b98a.png');
+      background-size: cover;
+      background-position: right center;
+      transform: scaleX(-1);
+    }
+
+    .dashboard > .panel:nth-child(3) > * {
+      transform: scaleX(-1);
+    }
+
+    .panel-card {
+      background: var(--input-bg);
+      border: 1px solid rgba(186, 230, 253, 0.7);
+      border-radius: 6px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(186, 230, 253, 0.2);
+    }
+
+    .panel-card.flex-1 {
+      min-height: 0;
+      flex: 1;
+    }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-shadow: 0 0 6px rgba(186, 230, 253, 0.6);
+    }
+
+    .section-desc {
+      font-size: 10px;
+      color: var(--text-muted);
+      line-height: 1.3;
+      font-weight: 500;
+    }
+
+    input[type="text"], input[type="number"], textarea, select {
+      width: 100%;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      color: var(--text-main);
+      padding: 6px 8px;
+      font-size: 11px;
+      font-weight: 600;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    input[type="text"]:focus, input[type="number"]:focus, textarea:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+      background: #ffffff;
+    }
+
+    .btn {
+      background: #ffffff;
+      border: 1px solid #bae6fd;
+      color: #0369a1;
+      font-weight: 700;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(186, 230, 253, 0.3);
+    }
+
+    .btn:hover {
+      background: #f0f9ff;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+      color: var(--accent-blue);
+    }
+
+    .btn-red {
+      background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+      border: 1px solid #38bdf8;
+      color: #ffffff;
+      box-shadow: 0 2px 10px rgba(56, 189, 248, 0.4);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-red:hover {
+      background: linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
+      box-shadow: 0 0 14px rgba(2, 132, 199, 0.6);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 4px;
+    }
+
+    .stream-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #f1f5f9;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--panel-border);
+      box-shadow: inset 0 0 10px rgba(186, 230, 253, 0.3);
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .no-stream {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      gap: 6px;
+      background: rgba(248, 250, 252, 0.85);
+      backdrop-filter: blur(4px);
+    }
+
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 3px;
+    }
+
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #bae6fd;
+      border-radius: 3px;
+    }
+
+    .custom-scroll::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-cyan);
+    }
+
+    .account-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      min-height: 160px;
+      flex: 1;
+      overflow-y: auto; 
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .acc-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      padding: 5px 7px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    .acc-item:hover {
+      background: #f0f9ff;
+      border-color: #bae6fd;
+    }
+
+    .acc-item input[type="checkbox"] {
+      accent-color: var(--accent-blue);
+      cursor: pointer;
+      pointer-events: none;
+    }
+
+    .acc-del-btn {
+      color: var(--text-muted);
+      font-weight: bold;
+      font-size: 11px;
+      padding: 0 4px;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .acc-del-btn:hover {
+      color: #ef4444;
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    .fav-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      max-height: 55px;
+      overflow-y: auto;
+      padding: 2px;
+    }
+
+    .fav-pill {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: 12px;
+      padding: 2px 10px;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--accent-blue);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 2px 4px rgba(186, 230, 253, 0.3);
+    }
+
+    .fav-pill:hover {
+      background: #e0f2fe;
+      border-color: var(--accent-cyan);
+    }
+
+    .fav-del {
+      color: var(--text-muted);
+      font-weight: bold;
+    }
+
+    .fav-del:hover {
+      color: #ef4444;
+    }
+
+    .log-box {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      min-height: 90px;
+      flex: 1;
+      overflow-y: auto !important; 
+      overflow-x: hidden;
+      padding: 6px;
+      font-family: Consolas, Courier, monospace;
+      font-size: 10px;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .log-entry {
+      line-height: 1.25;
+      border-bottom: 1px dotted #e2e8f0;
+      padding-bottom: 2px;
+      flex-shrink: 0;
+      word-break: break-all;
+    }
+
+    .log-time {
+      color: var(--text-muted);
+      margin-right: 4px;
+      font-weight: 600;
+    }
+
+    .log-success { color: #16a34a; font-weight: 600; }
+    .log-error { color: #dc2626; font-weight: 600; }
+    .log-info { color: #0284c7; font-weight: 600; }
+
+    .flex-1 { flex: 1; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <div class="brand-dot"></div>
+      Arsh Bot // Holy Angel Edition
+    </div>
+    <div class="version">v7.0 [Holy Angel & Celestial Blue]</div>
+  </header>
+
+  <div class="wing-bg wing-left"></div>
+  <div class="wing-bg wing-right"></div>
+
+  <div class="dashboard">
+
+    <div class="panel custom-scroll">
+      
+      <div class="panel-card">
+        <div class="section-title">Target Streamer</div>
+        <div style="display: flex; gap: 4px; margin-top: 4px;">
+          <input type="text" id="streamerInput" placeholder="channel name..." oninput="saveStreamerInput()">
+          <button class="btn btn-red" onclick="connectStream()">GO</button>
+        </div>
+        <div class="section-desc" id="connStatus" style="margin-top: 2px;">Status: Offline</div>
+      </div>
+
+      <div class="panel-card">
+        <div class="section-title">Bearer Tokens (Cloud Synced)</div>
+        <textarea id="tokensInput" rows="3" placeholder="Paste tokens, one per line..." oninput="saveTokenInput()"></textarea>
+        <div class="btn-group" style="margin-top: 2px;">
+          <button class="btn flex-1" onclick="parseTokensOnly()">Load</button>
+          <button class="btn btn-red flex-1" onclick="validateTokens()">Validate</button>
+        </div>
+        <div class="section-desc"><span id="tokenCount">0</span> tokens in buffer</div>
+      </div>
+
+      <div class="panel-card">
+        <div class="section-title">Proxy Settings</div>
+        <textarea id="proxiesInput" rows="2" placeholder="ip:port or ip:port:user:pass..." oninput="saveProxyInput()"></textarea>
+        <div class="btn-group" style="margin-top: 2px;">
+          <button class="btn flex-1" onclick="parseProxiesOnly()">Load</button>
+          <button class="btn btn-red flex-1" onclick="validateProxies()">Validate Proxies</button>
+        </div>
+        <div class="section-desc"><span id="proxyCount">0</span> proxies in buffer</div>
+      </div>
+
+      <div class="panel-card">
+        <div class="section-title">Mass Follow Bot</div>
+        <div class="section-desc">Follow target channel with verified accounts.</div>
+        
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 4px;">
+          <span class="section-desc" style="flex: 1;">Limit Accounts (0 = All):</span>
+          <input type="number" id="maxFollowAccountsInput" value="0" min="0" placeholder="0" style="width: 70px; text-align: center; font-weight: 600;">
+        </div>
+
+        <button class="btn btn-red" style="margin-top: 4px;" onclick="followChannelAllTokens()">Execute Mass Follow</button>
+      </div>
+
+      <div class="panel-card flex-1">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="section-title">Accounts (<span id="selectedCount">0</span> sel)</div>
+          <div style="display: flex; gap: 3px;">
+            <button class="btn" style="font-size: 8px; padding: 2px 4px;" onclick="selectActiveOnly()">Active</button>
+            <button class="btn" style="font-size: 8px; padding: 2px 4px;" onclick="selectAllAccounts(true)">All</button>
+            <button class="btn" style="font-size: 8px; padding: 2px 4px;" onclick="selectAllAccounts(false)">None</button>
+            <button class="btn btn-red" style="font-size: 8px; padding: 2px 4px;" onclick="deleteDeadAccounts()" title="Remove all expired accounts">Purge Dead</button>
+          </div>
+        </div>
+
+        <input type="text" id="searchAccountInput" placeholder="Search account username..." oninput="filterAccounts()">
+
+        <div class="account-box custom-scroll flex-1" id="accountContainer">
+          <div style="color: var(--text-muted); font-size: 10px; text-align: center; margin-top: 15px;">
+            Awaiting token validation...
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="panel" style="padding: 4px;">
+      <div style="padding: 4px; font-size: 11px; color: var(--accent-blue); font-weight: 700;" id="chatHeader">Live Stream Monitor</div>
+      
+      <div class="stream-container flex-1">
+        <iframe id="kickPlayer" src="" allowfullscreen></iframe>
+        <div class="no-stream" id="noStreamOverlay">
+          <div style="font-size: 28px;">👼</div>
+          <div style="font-size: 13px; color: var(--text-main); font-weight: 700;">No Signal Connected</div>
+          <div style="font-size: 10px;">Enter a channel name on the left panel</div>
+        </div>
+      </div>
+
+      <div class="panel-card" style="margin-top: 4px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div class="section-title">Quick Chat Dispatch</div>
+          <button class="btn btn-red" style="font-size: 9px; padding: 2px 6px;" onclick="saveCurrentQuickMsg()">+ Save Current</button>
+        </div>
+        
+        <div style="display: flex; gap: 4px; margin-top: 4px;">
+          <input type="text" id="streamBottomMsg" placeholder="Type quick message..." onkeydown="if(event.key==='Enter') sendStreamBottomMsg()">
+          <button class="btn btn-red" onclick="sendStreamBottomMsg()">Send</button>
+        </div>
+
+        <div class="fav-list custom-scroll" id="quickFavList" style="margin-top: 2px;">
+          <span style="font-size:9px; color:var(--text-muted);">Saved bar empty. Type & click "+ Save Current".</span>
+        </div>
+
+        <label style="font-size: 10px; color: var(--text-muted); display: flex; align-items: center; gap: 6px; margin-top: 2px; cursor: pointer;">
+          <input type="checkbox" id="randomAccToggle" checked style="accent-color: var(--accent-blue);">
+          Pick random account from selected list
+        </label>
+      </div>
+    </div>
+
+    <div class="panel custom-scroll">
+
+      <div class="panel-card">
+        <div class="section-title">Timing Settings</div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+          <span class="section-desc" style="flex: 1;">Slow Mode Delay (sec):</span>
+          <input type="number" id="delayInput" value="0" min="0" step="0.1" style="width: 70px; text-align: center; font-weight: 600;">
+        </div>
+      </div>
+      
+      <div class="panel-card">
+        <div class="section-title">Favorites Word Bank</div>
+        <div style="display: flex; gap: 4px;">
+          <input type="text" id="favWordInput" placeholder="Save word/phrase...">
+          <button class="btn btn-red" onclick="saveFavoriteWord()">+ Save</button>
+        </div>
+        <div class="fav-list custom-scroll" id="favList"></div>
+      </div>
+
+      <div class="panel-card">
+        <div class="section-title">Msg Panel 1: Mass Spam</div>
+        <input type="text" id="msgPanel1" placeholder="Broadcast message to selected...">
+        
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: 4px;">
+          <span class="section-desc" style="flex: 1;">Limit Accounts (0 = All):</span>
+          <input type="number" id="maxAccountsInput" value="0" min="0" placeholder="0" style="width: 70px; text-align: center; font-weight: 600;">
+        </div>
+
+        <div class="btn-group" style="margin-top: 4px;">
+          <button class="btn btn-red flex-1" style="padding: 6px;" onclick="sendMassSpamPanel1()">Launch</button>
+          <button class="btn flex-1" style="padding: 6px; background: #fef2f2; border-color: #fca5a5; color: #dc2626;" onclick="stopMassSpam()">Stop</button>
+        </div>
+      </div>
+
+      <div class="panel-card flex-1">
+        <div class="section-title">System Activity Log</div>
+        
+        <div class="log-box custom-scroll" id="logBox">
+          <div class="log-entry log-info"><span class="log-time">[SYSTEM]</span> Arsh Bot Holy Angel interface online[cite: 8].</div>
+        </div>
+
+        <div class="btn-group" style="margin-top: 4px;">
+          <button class="btn flex-1" onclick="clearLog()">Clear</button>
+          <button class="btn flex-1" id="toggleLogBtn" onclick="toggleLog()">Toggle</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Updated Backend URL
+    const BACKEND_URL = 'https://arsh-bot-backend-for-other-production.up.railway.app';
+
+    let favoriteWords = [];
+    let logVisible = true;
+    let validatedAccountsData = [];
+    let stopRequested = false;
+    let currentAbortController = null;
+
+    window.onload = async function() {
+      const savedFavs = localStorage.getItem('diablo_fav_words');
+      if (savedFavs) {
+        try {
+          favoriteWords = JSON.parse(savedFavs);
+          renderFavorites();
+        } catch(e) {}
+      }
+
+      const savedStreamer = localStorage.getItem('diablo_streamer');
+      if (savedStreamer) {
+        document.getElementById('streamerInput').value = savedStreamer;
+        connectStream();
+      }
+
+      const savedProxiesText = localStorage.getItem('diablo_proxies_text');
+      if (savedProxiesText) {
+        document.getElementById('proxiesInput').value = savedProxiesText;
+        const proxyCount = savedProxiesText.split('\n').filter(p => p.trim()).length;
+        document.getElementById('proxyCount').innerText = proxyCount;
+      }
+
+      try {
+        writeLog('Fetching tokens from cloud server...', 'info');
+        const res = await fetch(`${BACKEND_URL}/api/tokens`);
+        const data = await res.json();
+        if (data && data.tokens && data.tokens.length > 0) {
+          const tokensText = data.tokens.join('\n');
+          document.getElementById('tokensInput').value = tokensText;
+          document.getElementById('tokenCount').innerText = data.tokens.length;
+          localStorage.setItem('diablo_tokens_text', tokensText);
+          writeLog(`Loaded ${data.tokens.length} tokens from cloud successfully!`, 'success');
+          parseTokensOnly(true);
+        } else {
+          loadTokensFromLocal();
+        }
+      } catch (err) {
+        writeLog('Cloud fetch failed. Loading local session tokens.', 'error');
+        loadTokensFromLocal();
+      }
+    };
+
+    function loadTokensFromLocal() {
+      const savedTokensText = localStorage.getItem('diablo_tokens_text');
+      if (savedTokensText) {
+        document.getElementById('tokensInput').value = savedTokensText;
+        const lineCount = savedTokensText.split('\n').filter(t => t.trim()).length;
+        document.getElementById('tokenCount').innerText = lineCount;
+      }
+      const savedAccounts = localStorage.getItem('diablo_validated_accounts');
+      if (savedAccounts) {
+        try {
+          validatedAccountsData = JSON.parse(savedAccounts);
+          renderAccountList(validatedAccountsData);
+          writeLog('Restored previous session accounts from local storage.', 'info');
+        } catch(e) {}
+      }
+    }
+
+    async function saveTokensToCloud(tokensArray) {
+      try {
+        await fetch(`${BACKEND_URL}/api/tokens`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tokens: tokensArray })
+        });
+      } catch (err) {
+        console.error('Failed to sync tokens to cloud', err);
+      }
+    }
+
+    function saveStreamerInput() {
+      const val = document.getElementById('streamerInput').value;
+      localStorage.setItem('diablo_streamer', val);
+    }
+
+    function saveTokenInput() {
+      const val = document.getElementById('tokensInput').value;
+      localStorage.setItem('diablo_tokens_text', val);
+      const lineCount = val.split('\n').filter(t => t.trim()).length;
+      document.getElementById('tokenCount').innerText = lineCount;
+    }
+
+    function saveProxyInput() {
+      const val = document.getElementById('proxiesInput').value;
+      localStorage.setItem('diablo_proxies_text', val);
+      const proxyCount = val.split('\n').filter(p => p.trim()).length;
+      document.getElementById('proxyCount').innerText = proxyCount;
+    }
+
+    function getProxiesList() {
+      const raw = document.getElementById('proxiesInput').value;
+      return raw.split('\n').map(p => p.trim()).filter(p => p.length > 0);
+    }
+
+    function parseProxiesOnly() {
+      const proxies = getProxiesList();
+      document.getElementById('proxyCount').innerText = proxies.length;
+      writeLog(`Loaded ${proxies.length} proxies into buffer.`, 'info');
+    }
+
+    async function validateProxies() {
+      const proxies = getProxiesList();
+      if (proxies.length === 0) {
+        writeLog('Proxy validation error: Proxy buffer is empty.', 'error');
+        return;
+      }
+
+      writeLog(`Validating ${proxies.length} proxies via backend...`, 'info');
+
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/validate-proxies`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ proxies })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          writeLog(`Proxy Validation Complete! Working: ${result.summary.working} | Dead: ${result.summary.dead}`, 'success');
+        } else {
+          writeLog(`Proxy Validation Error: ${result.error || 'Failed'}`, 'error');
+        }
+      } catch (err) {
+        writeLog('Connection error: Backend unreachable for proxy validation.', 'error');
+      }
+    }
+
+    function writeLog(text, type = 'info') {
+      const logBox = document.getElementById('logBox');
+      const timeStr = new Date().toLocaleTimeString();
+      const entry = document.createElement('div');
+      entry.className = `log-entry log-${type}`;
+      entry.innerHTML = `<span class="log-time">[${timeStr}]</span> ${text}`;
+      
+      logBox.appendChild(entry);
+      logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    function updateSelectedCount() {
+      const checkedBoxes = document.querySelectorAll('.acc-cb:checked');
+      document.getElementById('selectedCount').innerText = checkedBoxes.length;
+    }
+
+    function syncTextareaWithAccounts() {
+      const tokens = validatedAccountsData.map(acc => acc.token);
+      document.getElementById('tokensInput').value = tokens.join('\n');
+      document.getElementById('tokenCount').innerText = tokens.length;
+      localStorage.setItem('diablo_tokens_text', document.getElementById('tokensInput').value);
+      localStorage.setItem('diablo_validated_accounts', JSON.stringify(validatedAccountsData));
+      saveTokensToCloud(tokens);
+    }
+
+    function connectStream() {
+      const streamer = document.getElementById('streamerInput').value.trim();
+      const player = document.getElementById('kickPlayer');
+      const overlay = document.getElementById('noStreamOverlay');
+      const connStatus = document.getElementById('connStatus');
+
+      if (!streamer) {
+        writeLog('Error: Enter target streamer channel name first.', 'error');
+        return;
+      }
+
+      localStorage.setItem('diablo_streamer', streamer);
+      player.src = `https://player.kick.com/${streamer.toLowerCase()}`;
+      overlay.style.display = 'none';
+      connStatus.innerText = `Status: Online [${streamer}]`;
+      connStatus.style.color = 'var(--accent-blue)';
+      writeLog(`Stream linked: kick.com/${streamer}`, 'success');
+    }
+
+    function parseTokensOnly(skipLog = false) {
+      const rawText = document.getElementById('tokensInput').value.trim();
+      const container = document.getElementById('accountContainer');
+      const tokenCountDisplay = document.getElementById('tokenCount');
+      container.innerHTML = '';
+
+      if (!rawText) {
+        writeLog('Buffer empty: No tokens found in textarea.', 'error');
+        tokenCountDisplay.innerText = '0';
+        container.innerHTML = '<div style="color: var(--text-muted); font-size: 10px; text-align: center; margin-top: 15px;">No accounts loaded.</div>';
+        updateSelectedCount();
+        localStorage.removeItem('diablo_tokens_text');
+        localStorage.removeItem('diablo_validated_accounts');
+        saveTokensToCloud([]);
+        return;
+      }
+
+      const rawTokens = rawText.split('\n').map(t => t.trim()).filter(t => t.length > 0);
+      tokenCountDisplay.innerText = rawTokens.length;
+
+      validatedAccountsData = rawTokens.map((token, index) => ({
+        token,
+        valid: true,
+        username: `Account #${index + 1}`
+      }));
+
+      localStorage.setItem('diablo_tokens_text', rawText);
+      localStorage.setItem('diablo_validated_accounts', JSON.stringify(validatedAccountsData));
+      
+      saveTokensToCloud(rawTokens);
+
+      renderAccountList(validatedAccountsData);
+      if (!skipLog) {
+        writeLog(`Loaded ${rawTokens.length} tokens into buffer & synced to cloud. Click Validate to fetch real identities.`, 'info');
+      }
+    }
+
+    async function validateTokens() {
+      const rawText = document.getElementById('tokensInput').value.trim();
+      const tokenCountDisplay = document.getElementById('tokenCount');
+      const proxies = getProxiesList();
+
+      if (!rawText) {
+        writeLog('Validation error: Token buffer is empty.', 'error');
+        return;
+      }
+
+      const rawTokens = rawText.split('\n').map(t => t.trim()).filter(t => t.length > 0);
+      if (rawTokens.length === 0) return;
+
+      writeLog(`Authenticating ${rawTokens.length} tokens against Kick network...`, 'info');
+
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/validate-tokens`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tokens: rawTokens, proxies })
+        });
+
+        const result = await response.json();
+
+        if (!result.success) {
+          writeLog(`API auth error: ${result.error}`, 'error');
+          return;
+        }
+
+        const { validCount, invalidCount, total } = result.summary;
+        tokenCountDisplay.innerText = `${validCount}/${total}`;
+
+        validatedAccountsData = result.results.map((item, index) => ({
+          token: item.token,
+          valid: item.valid,
+          username: item.valid ? item.username : `Expired #${index + 1}`
+        }));
+
+        localStorage.setItem('diablo_validated_accounts', JSON.stringify(validatedAccountsData));
+        saveTokensToCloud(rawTokens);
+
+        renderAccountList(validatedAccountsData);
+        writeLog(`Validation complete. Active: ${validCount} | Dead: ${invalidCount}`, validCount > 0 ? 'success' : 'error');
+
+      } catch (err) {
+        writeLog('Connection error: Backend server unreachable.', 'error');
+      }
+    }
+
+    function renderAccountList(accounts) {
+      const container = document.getElementById('accountContainer');
+      container.innerHTML = '';
+
+      if (accounts.length === 0) {
+        container.innerHTML = '<div style="color: var(--text-muted); font-size: 10px; text-align: center; margin-top: 15px;">No accounts loaded.</div>';
+        updateSelectedCount();
+        return;
+      }
+
+      accounts.forEach((acc) => {
+        const statusColor = acc.valid ? '#16a34a' : '#ef4444';
+        const labelName = acc.valid ? `@${acc.username}` : `[EXPIRED]`;
+
+        const div = document.createElement('div');
+        div.className = 'acc-item';
+        div.innerHTML = `
+          <input type="checkbox" class="acc-cb" value="${acc.token}" ${acc.valid ? 'checked' : 'disabled'} data-username="${acc.username}">
+          <span style="color: ${acc.valid ? 'var(--text-main)' : 'var(--text-muted)'}; font-weight: ${acc.valid ? '600' : 'normal'}; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            ${labelName}
+          </span>
+          <span style="font-size:9px; font-weight: 700; color:${statusColor}; margin-right: 4px;">${acc.valid ? 'ACTIVE' : 'DEAD'}</span>
+          <span class="acc-del-btn" title="Delete account">✕</span>
+        `;
+        
+        div.onclick = (e) => {
+          if (e.target.classList.contains('acc-del-btn')) return;
+          if (acc.valid) {
+            const cb = div.querySelector('.acc-cb');
+            cb.checked = !cb.checked;
+            updateSelectedCount();
+          }
+        };
+
+        const delBtn = div.querySelector('.acc-del-btn');
+        delBtn.onclick = (e) => {
+          e.stopPropagation();
+          deleteSingleAccount(acc.token, acc.username);
+        };
+
+        container.appendChild(div);
+      });
+
+      updateSelectedCount();
+    }
+
+    function deleteSingleAccount(token, username) {
+      validatedAccountsData = validatedAccountsData.filter(acc => acc.token !== token);
+      syncTextareaWithAccounts();
+      renderAccountList(validatedAccountsData);
+      writeLog(`Removed account @${username} from panel.`, 'info');
+    }
+
+    function deleteDeadAccounts() {
+      const initialLength = validatedAccountsData.length;
+      validatedAccountsData = validatedAccountsData.filter(acc => acc.valid);
+      const purgedCount = initialLength - validatedAccountsData.length;
+
+      if (purgedCount === 0) {
+        writeLog('No dead accounts found to purge.', 'info');
+        return;
+      }
+
+      syncTextareaWithAccounts();
+      renderAccountList(validatedAccountsData);
+      writeLog(`Purged ${purgedCount} dead/expired accounts.`, 'success');
+    }
+
+    function filterAccounts() {
+      const query = document.getElementById('searchAccountInput').value.toLowerCase().trim();
+      if (!query) {
+        renderAccountList(validatedAccountsData);
+        return;
+      }
+
+      const filtered = validatedAccountsData.filter(acc => acc.username.toLowerCase().includes(query));
+      renderAccountList(filtered);
+    }
+
+    function selectAllAccounts(status) {
+      const checkboxes = document.querySelectorAll('.acc-cb:not(:disabled)');
+      checkboxes.forEach(cb => cb.checked = status);
+      updateSelectedCount();
+      writeLog(`Account selections updated (All = ${status}).`, 'info');
+    }
+
+    function selectActiveOnly() {
+      const checkboxes = document.querySelectorAll('.acc-cb');
+      checkboxes.forEach(cb => {
+        cb.checked = !cb.disabled;
+      });
+      updateSelectedCount();
+      writeLog('Filtered to select active accounts only.', 'info');
+    }
+
+    async function followChannelAllTokens() {
+      const streamer = document.getElementById('streamerInput').value.trim();
+      const selectedBoxes = document.querySelectorAll('.acc-cb:checked');
+      let selectedTokens = Array.from(selectedBoxes).map(cb => cb.value);
+      const proxies = getProxiesList();
+
+      const maxFollowVal = parseInt(document.getElementById('maxFollowAccountsInput').value) || 0;
+      if (maxFollowVal > 0 && selectedTokens.length > maxFollowVal) {
+        selectedTokens = selectedTokens.slice(0, maxFollowVal);
+      }
+
+      if (!streamer) {
+        writeLog('Follow error: Target streamer channel is required.', 'error');
+        return;
+      }
+      if (selectedTokens.length === 0) {
+        writeLog('Follow error: No active accounts selected.', 'error');
+        return;
+      }
+
+      writeLog(`[MASS FOLLOW] Executing on '${streamer}' using ${selectedTokens.length} accounts with proxies...`, 'info');
+
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/follow-selected-channel`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ streamer, tokens: selectedTokens, proxies })
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          writeLog(`[MASS FOLLOW] COMPLETE! Followed: ${result.summary.followed} | Failed: ${result.summary.failed}`, 'success');
+        } else {
+          writeLog(`[MASS FOLLOW] Error: ${result.error || 'Failed to process'}`, 'error');
+        }
+      } catch (err) {
+        writeLog('Connection error: Backend unreachable.', 'error');
+      }
+    }
+
+    function saveFavoriteWord() {
+      const input = document.getElementById('favWordInput');
+      const word = input.value.trim();
+      if (!word) return;
+
+      if (!favoriteWords.includes(word)) {
+        favoriteWords.push(word);
+        localStorage.setItem('diablo_fav_words', JSON.stringify(favoriteWords));
+        renderFavorites();
+        writeLog(`Word saved to favorites bank: "${word}"`, 'success');
+      }
+      input.value = '';
+    }
+
+    function saveCurrentQuickMsg() {
+      const input = document.getElementById('streamBottomMsg');
+      const word = input.value.trim();
+      if (!word) {
+        writeLog('Save error: Quick chat box is empty.', 'error');
+        return;
+      }
+
+      if (!favoriteWords.includes(word)) {
+        favoriteWords.push(word);
+        localStorage.setItem('diablo_fav_words', JSON.stringify(favoriteWords));
+        renderFavorites();
+        writeLog(`Saved to Quick Bar & Favorites: "${word}"`, 'success');
+      } else {
+        writeLog(`Word already exists in favorites: "${word}"`, 'info');
+      }
+    }
+
+    function renderFavorites() {
+      const list = document.getElementById('favList');
+      const quickList = document.getElementById('quickFavList');
+      
+      list.innerHTML = '';
+      quickList.innerHTML = '';
+
+      if (favoriteWords.length === 0) {
+        list.innerHTML = '<span style="font-size:10px; color:var(--text-muted);">No favorites saved.</span>';
+        quickList.innerHTML = '<span style="font-size:9px; color:var(--text-muted);">Saved bar empty. Type & click "+ Save Current".</span>';
+        return;
+      }
+
+      favoriteWords.forEach((word, idx) => {
+        const pill = document.createElement('div');
+        pill.className = 'fav-pill';
+        pill.innerHTML = `<span>${word}</span> <span class="fav-del" onclick="event.stopPropagation(); removeFavorite(${idx})">×</span>`;
+        pill.onclick = () => useFavoriteWord(word);
+        list.appendChild(pill);
+
+        const quickPill = document.createElement('div');
+        quickPill.className = 'fav-pill';
+        quickPill.innerHTML = `<span>${word}</span>`;
+        quickPill.title = "Click to direct send";
+        quickPill.onclick = () => sendDirectQuickWord(word);
+        quickList.appendChild(quickPill);
+      });
+    }
+
+    function removeFavorite(idx) {
+      favoriteWords.splice(idx, 1);
+      localStorage.setItem('diablo_fav_words', JSON.stringify(favoriteWords));
+      renderFavorites();
+      writeLog('Favorite word purged from storage.', 'info');
+    }
+
+    function useFavoriteWord(word) {
+      document.getElementById('msgPanel1').value = word;
+      document.getElementById('streamBottomMsg').value = word;
+      writeLog(`Loaded favorite into chat panels: "${word}"`, 'info');
+    }
+
+    function sendDirectQuickWord(word) {
+      document.getElementById('streamBottomMsg').value = word;
+      sendStreamBottomMsg();
+    }
+
+    function sendStreamBottomMsg() {
+      const streamer = document.getElementById('streamerInput').value.trim();
+      const msg = document.getElementById('streamBottomMsg').value.trim();
+      const selectedBoxes = document.querySelectorAll('.acc-cb:checked');
+      const isRandomEnabled = document.getElementById('randomAccToggle').checked;
+      const proxies = getProxiesList();
+
+      if (!streamer) {
+        writeLog('Quick chat error: Channel name required.', 'error');
+        return;
+      }
+      if (selectedBoxes.length === 0) {
+        writeLog('Quick chat error: Select at least one active account.', 'error');
+        return;
+      }
+      if (!msg) return;
+
+      if (isRandomEnabled) {
+        const randomBox = selectedBoxes[Math.floor(Math.random() * selectedBoxes.length)];
+        const randomToken = randomBox.value;
+        const accountName = randomBox.getAttribute('data-username') || 'Account';
+
+        writeLog(`Quick chat dispatch via random unit @${accountName}...`, 'info');
+
+        fetch(`${BACKEND_URL}/api/send-selected-bot-message`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ streamer, tokens: [randomToken], message: msg, proxies })
+        })
+        .then(res => res.json())
+        .then(result => {
+          if (result.success && result.summary.sent > 0) {
+            writeLog(`Quick chat sent via @${accountName}: "${msg}"`, 'success');
+            document.getElementById('streamBottomMsg').value = '';
+          } else {
+            const errReason = result.error || 'Check token or channel name';
+            writeLog(`Quick chat failed on @${accountName}: ${errReason}`, 'error');
+          }
+        })
+        .catch(() => {
+          writeLog('Connection error: Backend offline.', 'error');
+        });
+      } else {
+        executeApiSend(msg, 'QUICK CHAT ALL');
+        document.getElementById('streamBottomMsg').value = '';
+      }
+    }
+
+    function stopMassSpam() {
+      stopRequested = true;
+      if (currentAbortController) {
+        currentAbortController.abort();
+      }
+      writeLog('[SYSTEM] Operation halted by user.', 'error');
+    }
+
+    async function executeApiSend(message, sourceLabel) {
+      stopRequested = false;
+      currentAbortController = new AbortController();
+
+      const streamer = document.getElementById('streamerInput').value.trim();
+      const selectedBoxes = document.querySelectorAll('.acc-cb:checked');
+      let selectedTokens = Array.from(selectedBoxes).map(cb => cb.value);
+      const proxies = getProxiesList();
+
+      const delayInputVal = document.getElementById('delayInput').value;
+      const delaySec = parseFloat(delayInputVal);
+      const delayMs = isNaN(delaySec) || delaySec < 0 ? 0 : Math.round(delaySec * 1000);
+
+      const maxAccountsVal = parseInt(document.getElementById('maxAccountsInput').value) || 0;
+      if (maxAccountsVal > 0 && selectedTokens.length > maxAccountsVal) {
+        selectedTokens = selectedTokens.slice(0, maxAccountsVal);
+      }
+
+      if (!streamer || selectedTokens.length === 0 || !message) {
+        writeLog(`[${sourceLabel}] Dispatch error: Missing channel, active accounts, or message.`, 'error');
+        return;
+      }
+
+      if (delayMs === 0) {
+        writeLog(`[${sourceLabel}] Sending INSTANT BULLET-SPEED message via ${selectedTokens.length} accounts...`, 'info');
+
+        try {
+          const response = await fetch(`${BACKEND_URL}/api/send-selected-bot-message`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ streamer, tokens: selectedTokens, message, proxies }),
+            signal: currentAbortController.signal
+          });
+
+          if (stopRequested) return;
+
+          const result = await response.json();
+          if (result.success) {
+            writeLog(`[${sourceLabel}] DISPATCH COMPLETE! Sent: ${result.summary.sent} | Failed: ${result.summary.failed}`, 'success');
+            if (sourceLabel === 'MASS SPAM') {
+              document.getElementById('msgPanel1').value = '';
+            }
+          } else {
+            writeLog(`[${sourceLabel}] Error: ${result.error || 'Failed to dispatch'}`, 'error');
+          }
+        } catch (err) {
+          if (err.name === 'AbortError' || stopRequested) {
+            writeLog(`[${sourceLabel}] Action stopped by user.`, 'error');
+          } else {
+            writeLog(`[${sourceLabel}] Connection error: Backend unreachable.`, 'error');
+          }
+        }
+      } else {
+        writeLog(`[${sourceLabel}] Starting Slow Mode loop (${delaySec}s gap) for ${selectedTokens.length} accounts...`, 'info');
+
+        let sentCount = 0;
+        let failCount = 0;
+
+        for (let i = 0; i < selectedTokens.length; i++) {
+          if (stopRequested) {
+            writeLog(`[${sourceLabel}] Slow mode loop aborted by user.`, 'error');
+            break;
+          }
+
+          const token = selectedTokens[i];
+          const accNumber = i + 1;
+
+          try {
+            const response = await fetch(`${BACKEND_URL}/api/send-selected-bot-message`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ streamer, tokens: [token], message, proxies }),
+              signal: currentAbortController.signal
+            });
+
+            if (stopRequested) break;
+
+            const result = await response.json();
+            if (result.success && result.summary.sent > 0) {
+              sentCount++;
+              writeLog(`[${sourceLabel}] [${accNumber}/${selectedTokens.length}] Message sent successfully.`, 'success');
+            } else {
+              failCount++;
+              writeLog(`[${sourceLabel}] [${accNumber}/${selectedTokens.length}] Failed: ${result.error || 'Unknown'}`, 'error');
+            }
+          } catch (err) {
+            if (err.name === 'AbortError' || stopRequested) break;
+            failCount++;
+            writeLog(`[${sourceLabel}] [${accNumber}/${selectedTokens.length}] Network error.`, 'error');
+          }
+
+          if (i < selectedTokens.length - 1 && delayMs > 0) {
+            writeLog(`[${sourceLabel}] Waiting ${delaySec}s before next account...`, 'info');
+            for (let d = 0; d < delayMs; d += 100) {
+              if (stopRequested) break;
+              await new Promise(resolve => setTimeout(resolve, 100));
+            }
+          }
+        }
+
+        if (!stopRequested) {
+          writeLog(`[${sourceLabel}] SLOW MODE COMPLETE: Sent: ${sentCount} | Failed: ${failCount}`, sentCount > 0 ? 'success' : 'error');
+          if (sourceLabel === 'MASS SPAM') {
+            document.getElementById('msgPanel1').value = '';
+          }
+        }
+      }
+    }
+
+    function sendMassSpamPanel1() {
+      const msg = document.getElementById('msgPanel1').value.trim();
+      executeApiSend(msg, 'MASS SPAM');
+    }
+
+    function clearLog() {
+      document.getElementById('logBox').innerHTML = '';
+      writeLog('Activity console purged.', 'info');
+    }
+
+    function toggleLog() {
+      const logBox = document.getElementById('logBox');
+      const btn = document.getElementById('toggleLogBtn');
+      logVisible = !logVisible;
+
+      if (logVisible) {
+        logBox.style.display = 'flex';
+        btn.innerText = 'Toggle';
+      } else {
+        logBox.style.display = 'none';
+        btn.innerText = 'Show';
+      }
+    }
+  </script>
+</body>
+</html>
